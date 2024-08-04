@@ -1,0 +1,13 @@
+# build stage
+FROM artifactory.momenta.works/docker/node:lts-alpine as build-stage
+
+WORKDIR /app
+
+COPY package.json .
+COPY yarn.lock .
+COPY .npmrc .
+
+RUN yarn config set registry https://registry.npmmirror.com
+
+RUN yarn --pure-lockfile
+
