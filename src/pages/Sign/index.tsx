@@ -9,7 +9,7 @@ const Sign: React.FC = () => {
     const { username, password } = values;
 
     const [error] = await sign_up({ username, password });
-    console.log("onFinish", error);
+    console.error("onFinish", error);
     if (!error) {
       nav("/");
     }

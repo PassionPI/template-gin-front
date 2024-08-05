@@ -5,7 +5,7 @@ import { Button, Form, Input, Typography } from "antd";
 const onFinish = async (values: { username: string; password: string }) => {
   const { username, password } = values;
   const [error] = await login({ username, password });
-  console.log("onFinish", error);
+  console.error("onFinish", error);
   if (!error) {
     nav.go("/");
   }

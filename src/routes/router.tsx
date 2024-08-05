@@ -1,8 +1,10 @@
+import { actionTodo } from "@/app/todo";
+import MyLayout from "@/layout";
 import { loginAuthPending } from "@/services/login/token";
 import { Nav } from "@/utils/history";
 import { TreeToRoute } from "@/utils/staticRoute";
 import { suspense } from "@/utils/suspense";
-import { Outlet, createBrowserRouter, redirect } from "react-router-dom";
+import { createBrowserRouter, Outlet, redirect } from "react-router-dom";
 
 export const ROUTE = TreeToRoute({
   login: null,
@@ -24,10 +26,10 @@ export const AppRouter = createBrowserRouter([
         <Outlet />
       </>
     ),
-
     children: [
       {
         path: "/",
+        element: <MyLayout />,
         loader: async () => {
           return await loginAuthPending.then(
             () => null,
@@ -47,6 +49,10 @@ export const AppRouter = createBrowserRouter([
               {
                 index: true,
                 element: <Home />,
+                async loader() {
+                  actionTodo.init();
+                  return null;
+                },
               },
             ],
           },
