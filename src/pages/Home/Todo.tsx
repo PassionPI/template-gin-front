@@ -21,8 +21,14 @@ const Todo: FC<Props> = memo(() => {
         renderItem={(item) => {
           const { id, done, title } = item;
           return (
-            <List.Item key={id}>
-              <Checkbox checked={done} onChange={(e) => {}}>
+            <List.Item key={`${id}-${done}`}>
+              <Checkbox
+                checked={done}
+                onChange={(e) => {
+                  const done = e.target.checked;
+                  actionTodo.toggle(id, done);
+                }}
+              >
                 <Typography.Text delete={done}>{title}</Typography.Text>
               </Checkbox>
             </List.Item>

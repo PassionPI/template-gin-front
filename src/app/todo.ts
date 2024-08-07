@@ -1,4 +1,4 @@
-import { addTodo, getTodo, TodoItem } from "@/services/todo";
+import { addTodo, getTodo, TodoItem, updateTodo } from "@/services/todo";
 import { message } from "antd";
 import { create } from "zustand";
 
@@ -34,7 +34,13 @@ export const actionTodo = {
     }
     actionTodo.init();
   },
-  async toggle(id: number, bool: boolean) {},
+  async toggle(id: number, done: boolean) {
+    const [err] = await updateTodo({ id, done });
+    if (err) {
+      return;
+    }
+    actionTodo.init();
+  },
   onInput(e: React.ChangeEvent<HTMLInputElement>) {
     storeTodo.setState({ input: e.target.value });
   },
