@@ -1,5 +1,5 @@
 import { actionTodo } from "@/app/todo";
-import MyLayout from "@/layout";
+import MobileLayout from "@/layout/Mobile";
 import { loginAuthPending } from "@/services/login/token";
 import { Nav } from "@/utils/history";
 import { TreeToRoute } from "@/utils/staticRoute";
@@ -29,7 +29,8 @@ export const AppRouter = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <MyLayout />,
+        // element: <MyLayout />,
+        element: <MobileLayout />,
         loader: async () => {
           return await loginAuthPending.then(
             () => null,

@@ -1,6 +1,9 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
+const target = "http://192.168.31.41:8060";
+// const target = "http://192.168.31.41:8080";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
@@ -18,9 +21,14 @@ export default defineConfig({
   //   css: true,
   // },
   server: {
+    port: 3000,
     proxy: {
       "/api": {
-        target: "http://localhost:8080",
+        target: target,
+        changeOrigin: true,
+      },
+      "/open": {
+        target: target,
         changeOrigin: true,
       },
     },

@@ -1,9 +1,7 @@
 import { rsaEncrypt } from "@/utils/rsa";
 import { request } from "../request";
 import {
-  delToken,
   getPubKey,
-  getToken,
   rejectAuth,
   resolveAuth,
   setLoginStatus,
@@ -11,17 +9,11 @@ import {
 } from "./token";
 
 export const isLogin = async () => {
-  if (!getToken()) {
-    rejectAuth();
-    return;
-  }
   const [err] = await request({
-    method: "post",
     url: "/api/ping",
   });
   if (err != null) {
     rejectAuth();
-    delToken();
     return;
   }
   resolveAuth();
@@ -31,28 +23,27 @@ export const fetchPubKey = async () => {
   if (getPubKey()) {
     return;
   }
-  const [error, value] = await request<{ publicKey: string }>({
-    url: "/api/pub",
-    method: "POST",
+  const [error, value] = await request<string>({
+    url: "/open/pem",
   });
-  if (error || !value.publicKey) {
+  if (error || !value) {
     console.error(error);
   } else {
-    setPubKey(value.publicKey);
+    setPubKey(value);
   }
 };
 
 export const login = async (body: {
   username: string;
   password: string;
-}): Promise<[Error, null] | [null, { token: string }]> => {
+}): Promise<[Error, null] | [null, string]> => {
   const pubKey = getPubKey();
   if (!pubKey) {
     return [Error("public key not found"), null];
   }
   const encrypt = await rsaEncrypt(pubKey, body?.password);
-  const [error, value] = await request<{ token: string }>({
-    url: "/api/login",
+  const [error, value] = await request<string>({
+    url: "/open/login",
     method: "POST",
     body: {
       username: body?.username,
@@ -62,22 +53,22 @@ export const login = async (body: {
   if (error) {
     console.error(error);
   } else {
-    setLoginStatus(value.token);
+    setLoginStatus();
   }
-  return [error, value] as [Error, null] | [null, { token: string }];
+  return [error, value] as [Error, null] | [null, string];
 };
 
 export const sign_up = async (body: {
   username: string;
   password: string;
-}): Promise<[Error, null] | [null, { token: string }]> => {
+}): Promise<[Error, null] | [null, string]> => {
   const pubKey = getPubKey();
   if (!pubKey) {
     return [Error("public key not found"), null];
   }
   const encrypt = await rsaEncrypt(pubKey, body?.password);
-  const [error, value] = await request<{ token: string }>({
-    url: "/api/sign",
+  const [error, value] = await request<string>({
+    url: "/open/sign",
     method: "POST",
     body: {
       username: body?.username,
@@ -87,7 +78,7 @@ export const sign_up = async (body: {
   if (error) {
     console.error("sign:", error);
   } else {
-    setLoginStatus(value.token);
+    setLoginStatus();
   }
-  return [error, value] as [Error, null] | [null, { token: string }];
+  return [error, value] as [Error, null] | [null, string];
 };

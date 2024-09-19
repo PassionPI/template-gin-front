@@ -4,18 +4,17 @@
 //	- 自动 parse json
 //  - 自动处理错误
 
-import { getToken, loginAuthPending } from "@/services/login/token";
-import { createFetch, error, json, jwt, wait } from "@passion_pi/fetch";
+import { loginAuthPending } from "@/services/login/token";
+import { createFetch, error, json, wait } from "@passion_pi/fetch";
 import { Card, notification, Tag } from "antd";
 
 export const request = createFetch(
   error,
   wait({
     until: () => loginAuthPending,
-    pathWhiteList: ["/api/pub", "/api/login", "/api/sign", "/api/ping"],
+    pathWhiteList: ["/open/pem", "/open/login", "/open/sign", "/api/ping"],
   }),
   json(),
-  jwt({ token: getToken }),
   async (ctx, next) => {
     const { url, method } = ctx;
 

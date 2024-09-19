@@ -27,7 +27,7 @@ const Login: React.FC = () => {
         <Form
           name="basic"
           layout="vertical"
-          style={{ width: 400 }}
+          style={{ width: 300 }}
           onFinish={onFinish}
         >
           <Form.Item

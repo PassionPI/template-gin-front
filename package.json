@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.4",
-    "@passion_pi/fetch": "^0.1.8",
+    "@passion_pi/fetch": "^0.1.10",
     "@passion_pi/fp": "^0.2.8",
-    "@passion_pi/react": "^0.1.4",
+    "@passion_pi/react": "^0.1.8",
     "antd": "^5.19",
     "dayjs": "^1.11.9",
     "react": "^18.2.0",

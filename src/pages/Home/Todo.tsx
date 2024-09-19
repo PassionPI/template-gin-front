@@ -1,4 +1,5 @@
 import { actionTodo, storeTodo } from "@/app/todo";
+import { CloseOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Input, List, Space, Typography } from "antd";
 import type { FC } from "react";
 import { memo } from "react";
@@ -9,7 +10,7 @@ const Todo: FC<Props> = memo(() => {
   const { todoList, input } = storeTodo((state) => state);
 
   return (
-    <Card styles={{ body: { width: 600 } }}>
+    <Card styles={{ body: { width: "100%" } }}>
       <Space.Compact style={{ width: "100%" }}>
         <Input variant="filled" value={input} onChange={actionTodo.onInput} />
         <Button type="primary" onClick={actionTodo.add}>
@@ -21,7 +22,17 @@ const Todo: FC<Props> = memo(() => {
         renderItem={(item) => {
           const { id, done, title } = item;
           return (
-            <List.Item key={`${id}-${done}`}>
+            <List.Item
+              key={`${id}-${done}`}
+              extra={
+                <Button
+                  icon={<CloseOutlined />}
+                  type="text"
+                  size="small"
+                  onClick={() => actionTodo.del(id)}
+                />
+              }
+            >
               <Checkbox
                 checked={done}
                 onChange={(e) => {

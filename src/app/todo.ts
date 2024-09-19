@@ -1,4 +1,10 @@
-import { addTodo, getTodo, TodoItem, updateTodo } from "@/services/todo";
+import {
+  addTodo,
+  delTodo,
+  getTodo,
+  TodoItem,
+  updateTodo,
+} from "@/services/todo";
 import { message } from "antd";
 import { create } from "zustand";
 
@@ -29,6 +35,17 @@ export const actionTodo = {
       return;
     }
     const [err] = await addTodo({ title: storeTodo.getState().input });
+    if (err) {
+      return;
+    }
+    actionTodo.init();
+  },
+  async del(id: number) {
+    if (id == null) {
+      message.info("Please enter the id");
+      return;
+    }
+    const [err] = await delTodo(id);
     if (err) {
       return;
     }
